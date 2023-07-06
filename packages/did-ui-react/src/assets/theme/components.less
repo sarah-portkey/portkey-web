@@ -3,13 +3,18 @@
 .portkey-ui-wrapper,
 .portkey-ui-common-modals,
 .portkey-ui-base-modal {
+  // modal
+  .portkey-ant-modal-content,
+  .portkey-ant-modal-header {
+    background-color: var(--portkey-ui-bg-5);
+  }
   /* button */
   .portkey-ant-btn-dangerous.portkey-ant-btn-link span {
     text-decoration: underline;
   }
 
   .portkey-ant-btn {
-    // border-radius: 4px;
+    background-color: var(--portkey-ui-bg-5);
     width: 100%;
     height: auto;
     padding: 0;
@@ -32,7 +37,7 @@
     border-color: var(--portkey-ui-border-3);
     &:hover,
     &:focus {
-      color: white;
+      color: var(--portkey-ui-font-12);
       background-color: var(--portkey-ui-bg-9);
       border-color: var(--portkey-ui-border-3);
     }
@@ -41,7 +46,7 @@
     &:disabled:hover,
     &:disabled:focus,
     &:disabled:active {
-      color: white;
+      color: var(--portkey-ui-font-12);
       background-color: var(--portkey-ui-bg-2);
       border-color: var(--portkey-ui-border-3);
       box-shadow: none !important;
@@ -53,14 +58,16 @@
 
   .portkey-ant-input {
     font-size: 16px;
-
+    background-color: var(--portkey-ui-bg-5);
     &::placeholder {
       font-size: 14px;
       line-height: 20px;
       color: var(--portkey-ui-font-7);
     }
   }
-
+  .portkey-ant-input-affix-wrapper {
+    background-color: var(--portkey-ui-bg-5);
+  }
   .portkey-ant-input-affix-wrapper:not(.portkey-ant-input-affix-wrapper-disabled):hover,
   .portkey-ant-input-password:hover,
   .portkey-ant-input:hover,
@@ -158,6 +165,8 @@
   .portkey-ant-input-affix-wrapper-status-error:not(.portkey-ant-input-affix-wrapper-disabled):not(
       .portkey-ant-input-affix-wrapper-borderless
     ).portkey-ant-input-affix-wrapper:hover {
+    background-color: var(--portkey-ui-bg-5);
+
     border-color: var(--portkey-ui-border-3) !important;
   }
 
@@ -172,6 +181,10 @@
   }
 
   /* tabs */
+
+  .portkey-ant-tabs {
+    color: var(--portkey-ui-font-6);
+  }
   .portkey-ant-tabs-tab.portkey-ant-tabs-tab-active .portkey-ant-tabs-tab-btn {
     color: var(--portkey-ui-font-4);
     .portkey-ant-tabs-ink-bar {
@@ -180,6 +193,19 @@
   }
   .portkey-ant-tabs-tab:hover {
     color: var(--portkey-ui-font-11);
+  }
+
+  /** select */
+  .portkey-ant-select-dropdown {
+    background-color: var(--portkey-ui-bg-5);
+  }
+  .portkey-ant-select:not(.portkey-ant-select-customize-input) .portkey-ant-select-selector {
+    background-color: var(--portkey-ui-bg-5);
+  }
+  /* mobile */
+  // password code
+  .adm-passcode-input-cell {
+    background-color: var(--portkey-ui-bg-5);
   }
 }
 

@@ -17,7 +17,7 @@ import { timesDecimals } from '../../utils/converter';
 import { ZERO } from '../../constants/misc';
 import SendPreview from './components/SendPreview';
 import './index.less';
-import { useCheckSuffix, useDefaultToken } from '../../hooks/assets';
+import { useCheckSuffix } from '../../hooks/assets';
 import { usePortkey } from '../context';
 import { DEFAULT_DECIMAL } from '../../constants/assets';
 import crossChainTransfer, { intervalCrossChainTransfer } from '../../utils/sandboxUtil/crossChainTransfer';
@@ -100,8 +100,6 @@ function SendContent({
 
   const [amount, setAmount] = useState('');
   const [balance, setBalance] = useState('');
-
-  const defaultToken = useDefaultToken(tokenInfo.chainId);
 
   const btnDisabled = useMemo(() => {
     if (toAccount.address === '' || (stage === Stage.Amount && amount === '')) return true;
@@ -331,11 +329,6 @@ function SendContent({
         if (timesDecimals(amount, tokenInfo.decimals).isGreaterThan(balance)) {
           return TransactionError.TOKEN_NOT_ENOUGH;
         }
-        if (isCrossChain(toAccount.address, tokenInfo.chainId) && tokenInfo.symbol === defaultToken.symbol) {
-          if (ZERO.plus(defaultFee.crossChain).isGreaterThanOrEqualTo(amount)) {
-            return TransactionError.CROSS_NOT_ENOUGH;
-          }
-        }
       } else if (isNFT) {
         if (ZERO.plus(amount).isGreaterThan(balance)) {
           return TransactionError.NFT_NOT_ENOUGH;
@@ -362,18 +355,14 @@ function SendContent({
     balance,
     caHash,
     checkManagerSyncState,
-    defaultFee.crossChain,
-    defaultToken.symbol,
     getTranslationInfo,
     handleCheckTransferLimit,
     isNFT,
     managementAccount?.address,
     onModifyGuardians,
     originChainId,
-    toAccount.address,
     tokenInfo.chainId,
     tokenInfo.decimals,
-    tokenInfo.symbol,
   ]);
 
   const StageObj: TypeStageObj = useMemo(

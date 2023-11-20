@@ -6,16 +6,13 @@ import { handleKeyDown } from '../../utils/handlerKey';
 import { divDecimals, formatAmountShow } from '../../../../utils/converter';
 import CustomSvg from '../../../CustomSvg';
 import { ELF_SYMBOL } from '../../../../constants/assets';
-import { ZERO } from '../../../../constants/misc';
 import { usePortkey } from '../../../context';
 import { MAINNET } from '../../../../constants/network';
 import { getBalanceByContract } from '../../../../utils/sandboxUtil/getBalance';
-import { useDefaultToken } from '../../../../hooks/assets';
 import { useTokenPrice } from '../../../context/PortkeyAssetProvider/hooks';
 import { amountInUsdShow } from '../../../../utils/assets';
 import { useCheckManagerSyncState } from '../../../../hooks/wallet';
 import { usePortkeyAsset } from '../../../context/PortkeyAssetProvider';
-import { useFeeByChainId } from '../../../context/PortkeyAssetProvider/hooks/txFee';
 import { useThrottleEffect } from '../../../../hooks/throttle';
 
 export default function TokenInput({
@@ -24,7 +21,6 @@ export default function TokenInput({
   value,
   errorMsg,
   onChange,
-  getTranslationInfo,
   setErrorMsg,
 }: {
   fromAccount: { address: string; AESEncryptPrivateKey: string };
@@ -41,12 +37,9 @@ export default function TokenInput({
   const isMainnet = useMemo(() => networkType === MAINNET, [networkType]);
   const [amount, setAmount] = useState<string>(value ? `${value} ${token.symbol}` : '');
   const [balance, setBalance] = useState<string>(token.balance || '');
-  const [maxAmount, setMaxAmount] = useState('');
   const price = useTokenPrice(token.symbol);
   const checkManagerSyncState = useCheckManagerSyncState();
   const [isManagerSynced, setIsManagerSynced] = useState(true);
-  const { max: maxFee } = useFeeByChainId(token.chainId);
-  const defaultToken = useDefaultToken(token.chainId);
 
   console.log(value || amount, price, balance, 'price===');
 
@@ -76,50 +69,9 @@ export default function TokenInput({
     setBalance(balance);
   }, [chainType, fromAccount.address, sandboxId, token.address, token.chainId, token.symbol]);
 
-  const getMaxAmount = useCallback(async () => {
-    if (!balance) {
-      setMaxAmount('0');
-      return;
-    }
-    if (token.symbol === defaultToken.symbol) {
-      if (ZERO.plus(divDecimals(balance, token.decimals)).isLessThanOrEqualTo(maxFee)) {
-        setMaxAmount(divDecimals(balance, token.decimals).toString());
-        return;
-      }
-      if (!caHash || !managementAccount?.address) {
-        setMaxAmount('0');
-
-        return;
-      }
-      const _isManagerSynced = await checkManagerSyncState(token.chainId, caHash, managementAccount.address);
-      setIsManagerSynced(_isManagerSynced);
-      if (!_isManagerSynced) return;
-      const fee = await getTranslationInfo(divDecimals(balance, token.decimals).toString());
-      if (fee) {
-        setMaxAmount(divDecimals(balance, token.decimals).toString());
-      } else {
-        setMaxAmount(ZERO.plus(divDecimals(balance, token.decimals)).minus(maxFee).toString());
-      }
-    } else {
-      setMaxAmount(divDecimals(balance, token.decimals).toString());
-    }
-  }, [
-    balance,
-    caHash,
-    checkManagerSyncState,
-    defaultToken.symbol,
-    getTranslationInfo,
-    managementAccount,
-    maxFee,
-    token.chainId,
-    token.decimals,
-    token.symbol,
-  ]);
-
   useThrottleEffect(() => {
     getTokenBalance();
-    getMaxAmount();
-  }, [getMaxAmount, getTokenBalance]);
+  }, [getTokenBalance]);
 
   const handleAmountBlur = useCallback(() => {
     onChange({ amount, balance });
@@ -132,13 +84,23 @@ export default function TokenInput({
     const _isManagerSynced = await checkManagerSyncState(token.chainId, caHash, managementAccount.address);
     setIsManagerSynced(_isManagerSynced);
     if (_isManagerSynced) {
-      setAmount(maxAmount);
-      onChange({ amount: maxAmount, balance });
+      const _amount = divDecimals(balance, token.decimals).toFixed();
+      setAmount(_amount);
+      onChange({ amount: _amount, balance });
       setErrorMsg('');
     } else {
       setErrorMsg('Synchronizing on-chain account information...');
     }
-  }, [balance, caHash, checkManagerSyncState, managementAccount, maxAmount, onChange, setErrorMsg, token.chainId]);
+  }, [
+    balance,
+    caHash,
+    checkManagerSyncState,
+    managementAccount.address,
+    onChange,
+    setErrorMsg,
+    token.chainId,
+    token.decimals,
+  ]);
 
   return (
     <div className="amount-wrap">

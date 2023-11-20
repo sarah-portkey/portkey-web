@@ -5,7 +5,6 @@ import { formatAmountShow } from '../../../../utils/converter';
 import { supplementAllAelfAddress, isAelfAddress } from '../../../../utils/aelf';
 import { amountInUsdShow, chainShowText } from '../../../../utils/assets';
 import { useDefaultToken } from '../../../../hooks/assets';
-import { ZERO } from '../../../../constants/misc';
 import { useTokenPrice } from '../../../context/PortkeyAssetProvider/hooks';
 import { formatStr2EllipsisStr } from '../../../../utils';
 import './index.less';
@@ -61,29 +60,6 @@ export default function SendPreview({
     () => supplementAllAelfAddress(caAddress || '', undefined, chainId),
     [caAddress, chainId],
   );
-  const renderEstimateAmount = useMemo(() => {
-    if (ZERO.plus(amount).isLessThanOrEqualTo(crossChainFee)) {
-      return (
-        <>
-          <span className="usd">{isMainnet && '$0'}</span>0
-        </>
-      );
-    } else {
-      return (
-        <>
-          <span className="usd">
-            {isMainnet &&
-              amountInUsdShow({
-                balance: ZERO.plus(amount).minus(crossChainFee).toString(),
-                decimal: 0,
-                price: defaultTokenPrice,
-              })}
-          </span>
-          {formatAmountShow(ZERO.plus(amount).minus(crossChainFee))}
-        </>
-      );
-    }
-  }, [amount, crossChainFee, defaultTokenPrice, isMainnet]);
 
   return (
     <div className="portkey-ui-send-preview">
@@ -168,12 +144,6 @@ export default function SendPreview({
                 </span>
                 {` ${formatAmountShow(crossChainFee)} ${defaultToken.symbol}`}
               </span>
-            </p>
-          </div>
-          <div className="fee-preview">
-            <span className="label">Estimated amount received</span>
-            <p className="value">
-              <span className="symbol">{renderEstimateAmount}</span>
             </p>
           </div>
         </>

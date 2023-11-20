@@ -1,9 +1,6 @@
 import { ChainType } from '@portkey/types';
 import { getChainIdByAddress, getChainNumber } from '../aelf';
 import { BaseToken, the2ThFailedActivityItemType } from '../../components/types/assets';
-import { DEFAULT_TOKEN } from '../../constants/assets';
-import { ZERO } from '../../constants/misc';
-import { timesDecimals } from '../converter';
 import { getChain } from '../../hooks/useChainInfo';
 import { getContractBasic } from '@portkey/contracts';
 import { aelf } from '@portkey/utils';
@@ -64,7 +61,6 @@ const crossChainTransfer = async ({
   tokenInfo,
   memo,
   toAddress,
-  crossChainFee,
 }: CrossChainTransferParams) => {
   const chainId = tokenInfo.chainId;
   const chainInfo = await getChain(chainId);
@@ -102,10 +98,6 @@ const crossChainTransfer = async ({
 
   // return;
   // TODO Only support chainType: aelf
-  let _amount = amount;
-  if (tokenInfo.symbol === DEFAULT_TOKEN.symbol) {
-    _amount = ZERO.plus(amount).minus(timesDecimals(crossChainFee, DEFAULT_TOKEN.decimals)).toNumber();
-  }
 
   const tokenInfoResult = await tokenContract.callViewMethod('GetTokenInfo', { symbol: tokenInfo.symbol });
 
@@ -114,7 +106,7 @@ const crossChainTransfer = async ({
     chainType,
     privateKey,
     managerAddress,
-    amount: _amount,
+    amount,
     tokenInfo,
     memo,
     toAddress,
@@ -130,7 +122,7 @@ const crossChainTransfer = async ({
         tokenInfo,
         chainType,
         managerAddress,
-        amount: _amount,
+        amount,
         memo,
         toAddress,
         chainId,

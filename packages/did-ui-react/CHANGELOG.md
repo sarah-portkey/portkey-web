@@ -3,6 +3,44 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.0-alpha.23](https://github.com/Portkey-Wallet/portkey-web/compare/v2.0.0-alpha.22...v2.0.0-alpha.23) (2024-02-05)
+
+### Bug Fixes
+
+- 🐛 edit guardian ([50c5790](https://github.com/Portkey-Wallet/portkey-web/commit/50c57904b977cef263862393df9c5f54511cff0e))
+
+## [2.0.0-alpha.22](https://github.com/Portkey-Wallet/portkey-web/compare/v2.0.0-alpha.21...v2.0.0-alpha.22) (2024-02-05)
+
+**Note:** Version bump only for package @portkey/did-ui-react
+
+## [2.0.0-alpha.21](https://github.com/Portkey-Wallet/portkey-web/compare/v2.0.0-alpha.20...v2.0.0-alpha.21) (2024-02-04)
+
+### Bug Fixes
+
+- 🐛 adjust UI calculation logic ([facf43b](https://github.com/Portkey-Wallet/portkey-web/commit/facf43b1aa734510ce1139c68f1422a6c2e238e8))
+
+## [2.0.0-alpha.20](https://github.com/Portkey-Wallet/portkey-web/compare/v2.0.0-alpha.19...v2.0.0-alpha.20) (2024-02-02)
+
+### Bug Fixes
+
+- 🐛 drawer height ([d855069](https://github.com/Portkey-Wallet/portkey-web/commit/d8550698ac863abdbf6421fbc1219fcd8fa306d3))
+
+## [2.0.0-alpha.19](https://github.com/Portkey-Wallet/portkey-web/compare/v2.0.0-alpha.18...v2.0.0-alpha.19) (2024-01-30)
+
+**Note:** Version bump only for package @portkey/did-ui-react
+
+## [2.0.0-alpha.18](https://github.com/Portkey-Wallet/portkey-web/compare/v2.0.0-alpha.17...v2.0.0-alpha.18) (2024-01-30)
+
+### Bug Fixes
+
+- 🐛 qr data ([f4f333b](https://github.com/Portkey-Wallet/portkey-web/commit/f4f333b5666da60a07313b98f02b9ae81e1f2ada))
+
+## [2.0.0-alpha.17](https://github.com/Portkey-Wallet/portkey-web/compare/v2.0.0-alpha.16...v2.0.0-alpha.17) (2024-01-29)
+
+### Features
+
+- 🎸 add finish resutl create type ([b5ab726](https://github.com/Portkey-Wallet/portkey-web/commit/b5ab726364d70ee363a9c80d8560574570cdeb7d))
+
 ## [2.0.0-alpha.16](https://github.com/Portkey-Wallet/portkey-web/compare/v2.0.0-alpha.15...v2.0.0-alpha.16) (2024-01-26)
 
 ### Bug Fixes
